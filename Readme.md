@@ -3,6 +3,7 @@
 [Pretty version](http://ttscoff.github.com/QuickQuestion/)
 
 Written by Brett Terpstra for Mac OS in mind
+
 I have modified it for my operating system Ubuntu
 
 ### Installation ###
