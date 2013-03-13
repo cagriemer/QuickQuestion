@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # notes folder, for note creation and limiting searches
-NOTESDIR="/home/cagriemer/.notes"
+NOTESDIR="/Users/cagri/.notes"
 # extension used for your notes
 # example NOTESEXT=".md"
 NOTESEXT=""

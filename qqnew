@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # notes directory
-NOTESDIR="/home/cagriemer/.notes"
+NOTESDIR="$HOME/.notes"
 
 # extension used for note files for example ".md"
 NOTESEXT=""
@@ -12,7 +12,7 @@ EDITOR="nano"
 function usage()
 {
 echo -e "\n\tQUICK QUESTIONS HELP"
-echo -e "\t-a to add note"
+echo -e "\t-a <question> <answer> to add note"
 echo -e "\t-e <note_name> to edit a note"
 echo -e "\t-l to list all notes"
 echo -e "\t-r <note_name> to remove a note"
@@ -43,19 +43,16 @@ do
 
 		h)
 			usage
-			exit 1
 		;;
 
 		\?)
 			echo -e "\n-$OPTARG is not a recognized option."
 			usage
-			exit 127
 		;;
 
 		:)
 			echo -e "\n-$OPTARG needs an argument."
 			usage
-			exit 1
 		;;
 	esac
 done
