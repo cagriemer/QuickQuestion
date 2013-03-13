@@ -1,1 +1,0 @@
-on handle_string(message)		set answers to do shell script "~/scripts/qq \"" & message & "\""	tell application "LaunchBar" to display in large type answers	end handle_string
