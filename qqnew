@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# notes directory
+NOTESDIR="/home/cagriemer/.notes"
+
+# extension used for note files for example ".md"
+NOTESEXT=""
+
+# editor to be used for editing answers
+EDITOR="nano"
+
+function usage()
+{
+echo -e "\n\tQUICK QUESTIONS HELP"
+echo -e "\t-a to add note"
+echo -e "\t-e <note_name> to edit a note"
+echo -e "\t-l to list all notes"
+echo -e "\t-r <note_name> to remove a note"
+echo -e "\t-h to print this help\n"
+exit 0
+}
+
+[[ ! $1 ]] && usage
+
+while getopts ":a:e:r:lh" opt
+do
+	case "$opt" in
+		a)
+			echo "add note"
+		;;
+
+		e)
+			echo "edit note"
+		;;
+
+		r)
+			find $NOTESDIR -name $OPTARG -exec rm -rfi {} \;
+		;;
+
+		l)
+			ls -t1 $NOTESDIR | nl
+		;;
+
+		h)
+			usage
+			exit 1
+		;;
+
+		\?)
+			echo -e "\n-$OPTARG is not a recognized option."
+			usage
+			exit 127
+		;;
+
+		:)
+			echo -e "\n-$OPTARG needs an argument."
+			usage
+			exit 1
+		;;
+	esac
+done
