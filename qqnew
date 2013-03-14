@@ -1,18 +1,18 @@
-#!/usr/local/bin/bash
+#!/bin/bash
+
+# TODO: implement @copy() and @open()
 
 # notes directory
 NOTESDIR="$HOME/.notes"
 
-# extension used for note files for example ".md"
-NOTESEXT=""
-
-# editor to be used for editing answers
+# text editor
 EDITOR="nano"
 
 function usage()
 {
 echo -e "\n\tQUICK QUESTIONS HELP"
-echo -e "\t-a <question> <answer> to add note"
+echo -e "\t<note_name> to see that note"
+echo -e "\t-a to add note"
 echo -e "\t-e <note_name> to edit a note"
 echo -e "\t-l to list all notes"
 echo -e "\t-r <note_name> to remove a note"
@@ -22,23 +22,61 @@ exit 0
 
 [[ ! $1 ]] && usage
 
-while getopts ":a:e:r:lh" opt
+if [[ $1 ]] && [[ "$1" != -* ]]
+then
+	echo "$(find $NOTESDIR -name $1)" | while read LINE
+	do
+		if [[ "$LINE" == "" ]]
+		then
+			echo "Sorry, I don't know the answer."
+			exit 1
+		fi
+		QUESTION=$(basename "$LINE")
+		echo -n "Q: "
+		echo $QUESTION
+		echo -n "A: "
+		FANCYANSWER=$(cat "$LINE" | egrep -c "@copy\(|@open\(")
+		if [[ "$FANCYANSWER" == "0" ]]
+		then
+			cat "$LINE"
+			echo
+		else
+			echo "fancy"
+		fi
+	done
+fi 
+
+while getopts ":ae:r:lh" opt
 do
 	case "$opt" in
 		a)
-			echo "add note"
+			echo -n "Question: "
+			read QUESTION
+			echo -n "Answer: "
+			read ANSWER
+			echo -n "$ANSWER" > "$NOTESDIR/$QUESTION" && echo "Question added."
+			exit 0
 		;;
 
 		e)
-			echo "edit note"
+			ANSWER=$(find "$NOTESDIR" -name "$OPTARG" | head -n 1)
+			if [[ "$ANSWER" == "" ]]
+			then
+				echo "No results found for search."
+				exit 1
+			else
+				$EDITOR "$ANSWER"
+			fi
 		;;
 
 		r)
 			find $NOTESDIR -name $OPTARG -exec rm -rfi {} \;
+			exit 0
 		;;
 
 		l)
 			ls -t1 $NOTESDIR | nl
+			exit 0
 		;;
 
 		h)
@@ -56,3 +94,4 @@ do
 		;;
 	esac
 done
+
